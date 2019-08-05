@@ -8,6 +8,9 @@ class Node:
         self.data = data
         self.next: Node = None
 
+    def __str__(self):
+        return self.data
+
 class LinkedList:
     def __init__(self):
         self.__head: Node = None
@@ -138,9 +141,51 @@ class LinkedList:
         return count
 
     def len_recursive(self, curr_node):
+        """
+        Calculate the length of the linked list via recurisve method
+        """
+
+        # base condition for the recurssion.
         if curr_node is None:
-            return 0
+            return   0
+        # Calculating the length.
         return self.len_recursive(curr_node.next) + 1
+
+    def __get_node(self, key):
+        curr_node = self.__head
+        prev_node = None
+        while curr_node and curr_node.data != key:
+            prev_node = curr_node
+            curr_node = curr_node.next
+        
+        return prev_node, curr_node
+
+    def swap_two_nodes(self, key1, key2):
+        if key1 == key2:
+            return
+        
+        prev_node_with_key1, curr_node_with_key1 = self.__get_node(key1)
+        prev_node_with_key2, curr_node_with_key2 = self.__get_node(key2)
+        
+        if curr_node_with_key1 is None or curr_node_with_key2 is None:
+            return
+
+        # if curr_node_with_key1 is not a head
+        if prev_node_with_key1:
+            prev_node_with_key1.next = curr_node_with_key2
+        else:
+            self.__head = curr_node_with_key2
+
+        # if curr_node_with_key2 is not a head
+        if prev_node_with_key2:
+            prev_node_with_key2.next = curr_node_with_key1
+        else:
+            self.__head = curr_node_with_key1
+
+        curr_node_with_key1.next, curr_node_with_key2.next = curr_node_with_key2.next, curr_node_with_key1.next
+
+
+        
 
 
 if __name__ == "__main__":
@@ -161,6 +206,8 @@ if __name__ == "__main__":
 
     print(linked_list.len_recursive(linked_list.head))
 
+    linked_list.swap_two_nodes("D", "B")
+    linked_list.print_list()
     # linked_list.delete_node("E")
     # linked_list.print_list()
     # linked_list.delete_node("D")
