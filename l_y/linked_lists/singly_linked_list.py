@@ -184,8 +184,34 @@ class LinkedList:
 
         curr_node_with_key1.next, curr_node_with_key2.next = curr_node_with_key2.next, curr_node_with_key1.next
 
-
+    def reverse_list(self):
+        prev_node, curr_node = None, self.__head
+        while curr_node:
+            next_node = curr_node.next
+            curr_node.next = prev_node
+            prev_node = curr_node
+            curr_node = next_node
         
+        self.__head = prev_node
+
+    def reverse_list_recursive(self):
+        # method internally.
+        def _reverse_list_recurisve(curr, prev):
+            if curr is None:
+                return prev
+            # store the next node of the current
+            next_node = curr.next
+            # Point the current node to the previous node
+            curr.next = prev
+            # Make the current node as prev
+            prev = curr
+            # make the current node as the next node
+            curr = next_node
+            # return the reverse list
+            return _reverse_list_recurisve(curr, prev)
+            
+
+        self.__head = _reverse_list_recurisve(self.head, prev=None)
 
 
 if __name__ == "__main__":
@@ -207,6 +233,11 @@ if __name__ == "__main__":
     print(linked_list.len_recursive(linked_list.head))
 
     linked_list.swap_two_nodes("D", "B")
+    linked_list.print_list()
+    print("Reversing..")
+    linked_list.reverse_list()
+    linked_list.print_list()
+    linked_list.reverse_list_recursive()
     linked_list.print_list()
     # linked_list.delete_node("E")
     # linked_list.print_list()
